@@ -1,0 +1,4 @@
+interface:
+  display_name: "SK AI 시험 운영"
+  short_description: "담당자 답변을 MD로 연결하고 남은 시간에 맞춰 구현·검증 안내"
+  default_prompt: "$sk-ai-exam-operator 시험 운영을 시작하고, 내가 알려주는 화면의 남은 시간과 담당자 답변에 맞춰 MD 기록·구현·검증을 이어가줘."

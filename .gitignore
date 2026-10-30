@@ -1,0 +1,10 @@
+exam-notes/
+.operator-state.json
+.env
+.env.*
+__pycache__/
+*.py[cod]
+work/
+outputs/
+.pytest_cache/
+.DS_Store
