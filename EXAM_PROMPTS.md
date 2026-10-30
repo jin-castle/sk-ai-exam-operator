@@ -1,6 +1,6 @@
-# 시험 시작 시 한 번 입력할 설치·시작 프롬프트 — v2.1.0
+# 시험 시작 시 한 번 입력할 설치·시작 프롬프트 — v2.2.0
 
-공개 저장소: https://github.com/jin-castle/sk-ai-exam-operator · 고정 ref: `v2.1.0`.
+공개 저장소: https://github.com/jin-castle/sk-ai-exam-operator · 고정 ref: `v2.2.0`.
 
 이 버전은 운영 스킬 1개 + 단계별 연결 스킬 9개, 원본 3프로젝트의 고정 소스·지원 문서·LICENSE를 함께 설치합니다. 연결 스킬은 원본을 실제 읽어 시험 조건 안에서 수행하며, gstack/Ouroboros의 전체 런타임 설치·실행을 의미하지 않습니다.
 
@@ -9,13 +9,13 @@
 아래 블록을 그대로 입력합니다. 잔여 시간은 AI가 한 번 요청하면 시험 화면에서 확인한 실제 값을 전달합니다.
 
 ```text
-공개 저장소 https://github.com/jin-castle/sk-ai-exam-operator 의 고정 ref v2.1.0에서
+공개 저장소 https://github.com/jin-castle/sk-ai-exam-operator 의 고정 ref v2.2.0에서
 운영 스킬과 단계별 원본 기반 스킬 팩을 함께 설치하고, 현재 대화에서 시험 운영을 시작해줘.
 
 응시 환경 안의 AI·파일·터미널 도구로만 진행하고, 외부 브라우저·새 탭·창은 열지 마.
 공개 자료는 허용된 Git Clone 또는 HTTP 다운로드로 가져와줘.
 기본 skill-installer의 install-skill-from-github.py를 찾아 사용해줘.
---repo jin-castle/sk-ai-exam-operator --ref v2.1.0 --method download 으로
+--repo jin-castle/sk-ai-exam-operator --ref v2.2.0 --method download 으로
 다음 10개 경로를 --path에 모두 전달해 한 번에 설치해줘:
 skills/sk-ai-exam-operator
 skills/sk-exam-interview
@@ -65,6 +65,13 @@ Python이 없으면 파일 존재·경로를 확인하고 해시 검증 불가�
 과제에 해당하는 입력 검증·권한·민감 정보 노출·저장 복구를 실제 검사 또는 미검증 이유와 연결해줘.
 문서는 바뀐 부분만 갱신하고, 정상 흐름과 중요한 업무 반례의 실제 결과로 완료를 판단해줘.
 
+실제 검사를 반복할 때 기존 Python과 허용된 로컬 명령으로 실행 근거 가드도 사용해줘.
+references/evidence-guard.md를 읽고 필수 항목·예외를 기존 F/E ID로 등록해줘.
+관련 소스·테스트·설정·입력을 --watch 범위에 넣어 실제 검사하고, 마지막 변경 뒤 status를 확인해줘.
+코드·요구사항·입력 변경이나 최신 실패를 과거 성공으로 가리지 마.
+이 결과는 등록 항목과 지정 파일의 실행 근거만 뜻하므로, 업무 정답·테스트 충분성·수동 관찰은 따로 확인해줘.
+도구가 없거나 허용되지 않으면 새로 설치하지 않고 기본 도구의 실제 명령·출력으로 확인해줘.
+
 제공 Codex·허용 모델·최신 응시 안내를 우선하고, Codex 업데이트·외부 AI·개인 키·Astra·
 MCP/새 런타임 설치·Computer Use·자동 브라우저·시험자료 외부 전송·Git Push는 하지 마.
 원본의 telemetry·외부 리뷰·자동 merge/push·worktree 전환·작업공간 삭제는 실행하지 마.
@@ -80,7 +87,7 @@ AI 금지 후속 서술형 단계 또는 과제 시간 만료를 알리면 작�
 기본 도우미가 이미 있는 환경에서 사용하는 인수 예시입니다. 도우미 경로와 Python 실행기는 현재 환경에서 확인합니다.
 
 ```text
-python -X utf8 -B EXISTING_INSTALLER_PATH --repo jin-castle/sk-ai-exam-operator --ref v2.1.0 --method download --path skills/sk-ai-exam-operator skills/sk-exam-interview skills/sk-exam-design skills/sk-exam-plan skills/sk-exam-implement skills/sk-exam-test skills/sk-exam-debug skills/sk-exam-review-response skills/sk-exam-review skills/sk-exam-verify
+python -X utf8 -B EXISTING_INSTALLER_PATH --repo jin-castle/sk-ai-exam-operator --ref v2.2.0 --method download --path skills/sk-ai-exam-operator skills/sk-exam-interview skills/sk-exam-design skills/sk-exam-plan skills/sk-exam-implement skills/sk-exam-test skills/sk-exam-debug skills/sk-exam-review-response skills/sk-exam-review skills/sk-exam-verify
 ```
 
 설치 경로가 이미 있으면 공식 도우미는 중단합니다. 충돌 없는 별도 `--dest`를 쓰면 기존 스킬을 보존하면서 팩 전체를 받을 수 있습니다. 재실행 시 일부만 설치된 상태를 완료로 표시하지 않습니다.

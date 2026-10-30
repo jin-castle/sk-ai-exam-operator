@@ -1,8 +1,16 @@
-# SK AI Exam Operator — v2.1.0 원본 포함 스킬 팩
+# SK AI Exam Operator — v2.2.0 원본 포함 스킬 팩
 
 SK AI 해커톤·Probe의 180분 과제에서 담당자 답변을 업무 규칙·기능·예외·판단·검증 MD로 연결하고, 남은 시간과 실제 상태에 따라 인터뷰·계획·구현·테스트·개선을 이어가는 개인 운영 팩입니다. 대회나 원본 프로젝트의 공식 시험 스킬은 아닙니다.
 
-**[시험 시작 때 한 번 입력할 설치·시작 프롬프트](EXAM_PROMPTS.md)**를 사용하세요. 고정 ref는 `v2.1.0`입니다. 기존 `v1.0.0`은 운영 스킬 하나만 포함한 이전 버전이며 태그를 이동하지 않습니다.
+**[시험 시작 때 한 번 입력할 설치·시작 프롬프트](EXAM_PROMPTS.md)**를 사용하세요. 고정 ref는 `v2.2.0`입니다. 기존 버전 태그는 이동하지 않습니다.
+
+## v2.2.0 실행 근거 검사
+
+- 선택적 `evidence_guard.py`가 등록한 필수 항목과 실제 검사 명령을 연결합니다.
+- 관련 소스·설정·입력·테스트의 내용과 파일 메타데이터를 실행 전후·현재 시점에 비교합니다. 일반적인 임시 수정 후 복원도 재검사를 요구합니다.
+- 최신 실패·시간 초과·실행 불가·거부된 검사, 누락되거나 변경된 로그를 과거 성공으로 가리지 않습니다.
+- 상태 조회는 읽기 전용이며, 기존 본문 MD·타이머를 수정하지 않습니다. Python 표준 라이브러리만 사용합니다.
+- [사용법과 감지 범위](skills/sk-ai-exam-operator/references/evidence-guard.md)를 확인하세요. 등록한 항목·지정한 파일 범위의 실행 기록 검사이며, 업무 정답·테스트 충분성·수동 UI 확인을 자동 판정하지 않습니다.
 
 ## v2.1.0 운영 보완
 
@@ -36,7 +44,7 @@ SK AI 해커톤·Probe의 180분 과제에서 담당자 답변을 업무 규칙�
 - gstack: `plan-eng-review/`, `review/`의 원본·지원 파일, MIT LICENSE.
 - Ouroboros: interview 원본, socratic-interviewer·seed-closer 보조 프롬프트, MIT LICENSE.
 
-고정 커밋의 **124개 원본 파일을 바이트 그대로 보존**했습니다. 원본 `SKILL.md`의 파일명만 `SKILL.original.md`로 저장해 호스트가 지원되지 않는 원본을 별도 스킬로 자동 등록하는 것을 막습니다. [잠금 파일](skills/sk-ai-exam-operator/bundle-lock.json)에 원래 경로·저장 경로·SHA256, [원본 고지](THIRD_PARTY_NOTICES.md)에 출처와 LICENSE가 있습니다. 원본은 운영 스킬 하위 `upstream/`에 함께 설치되고, 9개 연결 스킬은 그 파일을 사용합니다.
+고정 커밋의 **124개 원본 파일을 바이트 그대로 보존**했습니다. 이 수는 원본 스킬 지침 18개와 지원 파일 106개의 합계이며, 설치 진입점은 위의 10개입니다. 원본 `SKILL.md`의 파일명만 `SKILL.original.md`로 저장해 호스트가 지원되지 않는 원본을 별도 스킬로 자동 등록하는 것을 막습니다. [잠금 파일](skills/sk-ai-exam-operator/bundle-lock.json)에 원래 경로·저장 경로·SHA256, [원본 고지](THIRD_PARTY_NOTICES.md)에 출처와 LICENSE가 있습니다. 원본은 운영 스킬 하위 `upstream/`에 함께 설치되고, 9개 연결 스킬은 그 파일을 사용합니다.
 
 원본의 전체 실행 환경까지 설치하지는 않습니다. gstack의 바이너리·Bun·브라우저·telemetry·외부 모델, Ouroboros의 MCP·uvx, Superpowers의 자동 작업공간 전환·merge/push 등은 실행하지 않습니다. 연결 스킬이 원본 절차 중 실제 적용한 부분과 중요 생략을 기록합니다. [호출 계약](skills/sk-ai-exam-operator/references/skill-routing.md)을 참고하세요.
 
