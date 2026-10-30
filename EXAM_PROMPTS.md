@@ -1,21 +1,21 @@
-# 시험 시작 시 한 번 입력할 설치·시작 프롬프트 — v2.0.1
+# 시험 시작 시 한 번 입력할 설치·시작 프롬프트 — v2.1.0
 
-공개 저장소: https://github.com/jin-castle/sk-ai-exam-operator · 고정 ref: `v2.0.1`.
+공개 저장소: https://github.com/jin-castle/sk-ai-exam-operator · 고정 ref: `v2.1.0`.
 
 이 버전은 운영 스킬 1개 + 단계별 연결 스킬 9개, 원본 3프로젝트의 고정 소스·지원 문서·LICENSE를 함께 설치합니다. 연결 스킬은 원본을 실제 읽어 시험 조건 안에서 수행하며, gstack/Ouroboros의 전체 런타임 설치·실행을 의미하지 않습니다.
 
 ## 복사할 프롬프트
 
-`180분`은 화면에서 실제 확인한 값으로 바꿉니다. 확인하지 못했으면 해당 문장을 뺍니다.
+아래 블록을 그대로 입력합니다. 잔여 시간은 AI가 한 번 요청하면 시험 화면에서 확인한 실제 값을 전달합니다.
 
 ```text
-공개 저장소 https://github.com/jin-castle/sk-ai-exam-operator 의 고정 ref v2.0.1에서
+공개 저장소 https://github.com/jin-castle/sk-ai-exam-operator 의 고정 ref v2.1.0에서
 운영 스킬과 단계별 원본 기반 스킬 팩을 함께 설치하고, 현재 대화에서 시험 운영을 시작해줘.
 
 응시 환경 안의 AI·파일·터미널 도구로만 진행하고, 외부 브라우저·새 탭·창은 열지 마.
 공개 자료는 허용된 Git Clone 또는 HTTP 다운로드로 가져와줘.
 기본 skill-installer의 install-skill-from-github.py를 찾아 사용해줘.
---repo jin-castle/sk-ai-exam-operator --ref v2.0.1 --method download 으로
+--repo jin-castle/sk-ai-exam-operator --ref v2.1.0 --method download 으로
 다음 10개 경로를 --path에 모두 전달해 한 번에 설치해줘:
 skills/sk-ai-exam-operator
 skills/sk-exam-interview
@@ -46,7 +46,8 @@ Python이 없으면 파일 존재·경로를 확인하고 해시 검증 불가�
 이름을 추천하는 데서 끝내지 말고 구현·검사까지 이어가되, 원본 전체 런타임 실행과 구분해줘.
 설치 문제에 약 3분 이상 매달리지 마. 누락·제한이 있으면 알려주고 가능한 작업을 계속해줘.
 
-화면에서 확인한 남은 시간은 180분이야.
+180분 시험 운영을 시작하되 현재 잔여 시간은 아직 미확인이야.
+자료 확인을 진행하면서 화면에 표시된 남은 시간을 나에게 한 번 물어보고, 180분으로 임의 초기화하지 마.
 먼저 과제 원문·제공 자료·기존 코드·실행 방법을 확인해줘.
 파일로 확인할 사실은 직접 조사하고, 담당자에게 물을 업무 정책·우선순위·예외만 좁혀줘.
 생성된 질문 초안은 내가 사실·맥락·표현을 직접 검토한 뒤 담당자에게 사용할게.
@@ -56,6 +57,13 @@ Python이 없으면 파일 존재·경로를 확인하고 해시 검증 불가�
 현재 제공 작업공간에서 inline 구현을 기본으로 진행하고, 남은 시간과 실제 상태에 따라
 인터뷰→설계→계획→구현↔검사·디버깅→통합 리뷰→최종 검증을 선택해 이어가줘.
 실제로 사용한 연결 스킬·원본·적용 범위·중요 생략은 05_verification.md에 짧게 남겨줘.
+같은 버전 원본을 이미 읽었고 현재 문맥에 남아 있으면 재사용하고 필요한 절만 다시 확인해줘.
+문맥을 잃었거나 파일이 바뀌면 다시 읽고, 9개 단계를 의례적으로 모두 순회하지 마.
+주요 선택 또는 첫 사용자 흐름 완성 시 한두 번은 AI의 모범 설명보다 먼저
+내가 예상 동작·선택 이유·실패 조건을 짧게 설명하게 한 뒤 실제 코드와 대조해줘.
+내 답변이 없으면 이해 미확인으로 남기고 독립적인 작업을 계속해줘. 제출 직전에는 이 절차를 새로 시작하지 마.
+과제에 해당하는 입력 검증·권한·민감 정보 노출·저장 복구를 실제 검사 또는 미검증 이유와 연결해줘.
+문서는 바뀐 부분만 갱신하고, 정상 흐름과 중요한 업무 반례의 실제 결과로 완료를 판단해줘.
 
 제공 Codex·허용 모델·최신 응시 안내를 우선하고, Codex 업데이트·외부 AI·개인 키·Astra·
 MCP/새 런타임 설치·Computer Use·자동 브라우저·시험자료 외부 전송·Git Push는 하지 마.
@@ -72,7 +80,7 @@ AI 금지 후속 서술형 단계 또는 과제 시간 만료를 알리면 작�
 기본 도우미가 이미 있는 환경에서 사용하는 인수 예시입니다. 도우미 경로와 Python 실행기는 현재 환경에서 확인합니다.
 
 ```text
-python -X utf8 -B EXISTING_INSTALLER_PATH --repo jin-castle/sk-ai-exam-operator --ref v2.0.1 --method download --path skills/sk-ai-exam-operator skills/sk-exam-interview skills/sk-exam-design skills/sk-exam-plan skills/sk-exam-implement skills/sk-exam-test skills/sk-exam-debug skills/sk-exam-review-response skills/sk-exam-review skills/sk-exam-verify
+python -X utf8 -B EXISTING_INSTALLER_PATH --repo jin-castle/sk-ai-exam-operator --ref v2.1.0 --method download --path skills/sk-ai-exam-operator skills/sk-exam-interview skills/sk-exam-design skills/sk-exam-plan skills/sk-exam-implement skills/sk-exam-test skills/sk-exam-debug skills/sk-exam-review-response skills/sk-exam-review skills/sk-exam-verify
 ```
 
 설치 경로가 이미 있으면 공식 도우미는 중단합니다. 충돌 없는 별도 `--dest`를 쓰면 기존 스킬을 보존하면서 팩 전체를 받을 수 있습니다. 재실행 시 일부만 설치된 상태를 완료로 표시하지 않습니다.
