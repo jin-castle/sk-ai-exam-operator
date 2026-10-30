@@ -1,6 +1,6 @@
 ---
 name: sk-ai-exam-operator
-description: "SK AI 해커톤·Probe의 180분 과제에서 담당자 답변을 업무 규칙·기능·예외·판단·검증 MD로 연결하고, 참가자가 알려준 남은 시간에 따라 구현·테스트·개선과 필요한 스킬을 안내한다. 시험 시작 또는 진행 중 운영 요청에 사용하며 AI 금지 후속 서술형에는 사용하지 않는다."
+description: "SK AI 해커톤·Probe의 180분 과제에서 담당자 답변을 MD로 연결하고, 남은 시간·실제 진행 상태에 따라 함께 설치한 원본 기반 인터뷰·설계·계획·구현·검사·디버깅·검토·검증 스킬을 읽어 적용한다. 시험 시작 또는 진행 중 운영 요청에 사용하며 AI 금지 후속 서술형에는 사용하지 않는다."
 ---
 
 # SK AI 시험 운영
@@ -20,9 +20,9 @@ description: "SK AI 해커톤·Probe의 180분 과제에서 담당자 답변을 
 Python이 이미 사용 가능하고 로컬 실행이 허용된 경우에만 아래를 쓴다. `SKILL_DIR`는 지금 읽은 이 스킬의 실제 폴더로 바꾼다. 작업 폴더를 명시한다. 새 런타임을 설치하지 않는다.
 
 ```text
-python "SKILL_DIR/scripts/exam_session.py" init --root "exam-notes" --remaining 180
-python "SKILL_DIR/scripts/exam_session.py" checkpoint --root "exam-notes" --remaining 72
-python "SKILL_DIR/scripts/exam_session.py" status --root "exam-notes"
+python -X utf8 -B "SKILL_DIR/scripts/exam_session.py" init --root "exam-notes" --remaining 180
+python -X utf8 -B "SKILL_DIR/scripts/exam_session.py" checkpoint --root "exam-notes" --remaining 72
+python -X utf8 -B "SKILL_DIR/scripts/exam_session.py" status --root "exam-notes"
 ```
 
 `--remaining`은 **사용자가 실제로 보고한 경우에만** 전달한다. 없으면 생략한다. 스크립트는 시간대별 권고 구간과 마지막 보고를 기록할 뿐, 업무 진행도나 테스트 결과를 판단하지 않는다. 재호출·재개는 기존 상태를 보존하며 타이머를 초기화하지 않는다. `status`는 읽기 전용이다.
@@ -48,20 +48,27 @@ Python이 없거나 지정 문서를 재사용하면 기본 파일 도구로 같
 - 참가자가 직접 담당자와 대화한다. 질문 초안·답변 정리는 돕되 자동 연락·클릭·입력으로 확장하지 않는다. 담당자 답변을 받지 않았으면 확정 정책으로 만들지 않는다.
 - 목표·핵심 규칙·성공 기준이 확보되면 작은 사용자 흐름을 구현한다. 직접 사용과 검사에서 새 업무 경계가 드러나면 그 부분만 다시 질문한다.
 
-## 필요한 스킬을 고르는 방법
+## 함께 설치한 단계별 스킬을 호출하는 방법
 
-다른 스킬은 선택적이다. 현재 환경에서 실제로 인식되고 규정에 맞게 실행 가능한지 확인한다. 원본 전체 호출과 원칙 참고를 구분한다. 설치·모델 교체·MCP 구성에 과제 시간을 소비하지 않는다.
+v2.0.0 팩에는 이 운영 스킬과 단계별 연결 스킬 9개, 고정된 Superpowers·gstack·Ouroboros 원본·지원 문서·LICENSE가 들어 있다. [실제 호출·경로·원본 적용 계약](references/skill-routing.md)을 시작할 때 읽는다. 시작 검증에서 10개 진입점과 잠금 파일의 원본을 확인하고 검증 상태를 알린다.
 
-| 상황 | 참고할 원본 | 현재 작업 |
-|---|---|---|
-| 목표·업무 정책이 모호함 | Ouroboros `interview` | 사례·가정·모순을 확인해 수용 기준 확정 |
-| 첫 설계 또는 요구 변화 | gstack `plan-eng-review` | 범위·구조·실패 경로의 작은 검토 |
-| 재현 가능한 실패 | Superpowers `systematic-debugging` | 입력→중간 상태→출력을 따라 원인 확인 |
-| AI 수정·리뷰 제안 | Superpowers `receiving-code-review` | 실제 근거·영향·반례·작은 대안·검증으로 심사 |
-| 통합 변경 검토 | gstack `review` | 정책 불일치·손실·상태·회귀 위험 검토 |
-| 수정 완료·최종 제출 주장 | Superpowers `verification-before-completion` | 현재 변경과 관련된 실제 검사 근거 확인 |
+1. 지금 필요한 한 단계의 형제 폴더 `../sk-exam-<단계>/SKILL.md`를 실제 읽거나, 호스트의 실제 Skill 호출 도구가 제공되면 해당 도구로 호출한다.
+2. 연결 스킬이 지정한 `upstream/`의 원본 전체와 관련 지원 문서를 읽고 과제·시험 조건 안에서 수행한다. 링크·명령 이름을 출력한 것만으로 호출했다고 말하지 않는다.
+3. MD를 실제 결과로 갱신하고 다음 한 작업으로 이어간다. 원본에서 생략한 런타임·독립 검토는 별도로 표시한다.
 
-원본이 없거나 필수 절차가 규정·시간 예산과 맞지 않으면 해당 관점을 쓴 **별도 짧은 프롬프트와 기본 코드 도구**로 진행한다. 없는 명령을 실행하거나 검토받은 척하지 않는다. 현재 단계의 권고 스킬 하나 또는 필요한 기본 작업을 짧게 안내하면 충분하다. 상세 연결은 [시간별 운영](references/operation.md)에 있다.
+| 실제 상황 | 적용할 스킬 |
+|---|---|
+| 업무 정책·가정·예외가 모호함 | `sk-exam-interview` — Ouroboros interview |
+| 첫 설계 또는 요구 변경 | `sk-exam-design` — gstack plan-eng-review |
+| 파일·작업·검사 단위 계획 | `sk-exam-plan` — Superpowers writing-plans |
+| 프로토타입·개선·필수 기능 구현 | `sk-exam-implement` — Superpowers executing-plans |
+| 업무 규칙·반례의 구현 전후 검사 | `sk-exam-test` — Superpowers test-driven-development |
+| 재현 가능한 실패 | `sk-exam-debug` — Superpowers systematic-debugging |
+| 중요한 AI 수정 제안 | `sk-exam-review-response` — Superpowers receiving-code-review |
+| 통합 변경·누락·회귀 검토 | `sk-exam-review` — gstack review |
+| 변경 후 완료 주장·최종 준비 | `sk-exam-verify` — Superpowers verification-before-completion |
+
+스킬을 매번 전부 순회하지 않는다. 시간표와 실제 상태로 필요한 것을 선택하고 검사·디버깅·제안 심사는 언제든 재진입한다. 파일 설치와 호스트 목록 등록을 구분한다. 누락·해시 불일치면 성공을 주장하지 않고 문제를 알린 뒤 기본 코드 도구로 가능한 작업을 이어간다. 시험 중 자동 설치·업데이트·외부 런타임 복구를 반복하지 않는다.
 
 ## AI 제안을 판단하고 기록하는 기준
 

@@ -73,15 +73,21 @@
 참가자가 밝히지 않은 선택 이유나 후속 서술형 답안을 만들지 않는다.
 ```
 
-## 선택적 원본 연결
+## 단계별 실제 연결
 
-| 역할 | 원본 | 실행 시 주의 |
-|---|---|---|
-| 모호성·업무 판단 | [Ouroboros interview](https://github.com/Q00/ouroboros/blob/722172ef096767583679d04aef5e847458fee6b2/skills/interview/SKILL.md) | 원본 MCP·검토·확인 절차가 필요. 원칙 참고는 전체 실행과 다름 |
-| 설계·범위 검토 | [gstack plan-eng-review](https://github.com/garrytan/gstack/blob/ce3a093a6421f84705ff6d58b1b2b022ca9e945d/plan-eng-review/SKILL.md) | 실제 대상·시작 절차·외부 호출·환경 조건 확인 |
-| 실패 원인 | [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/systematic-debugging/SKILL.md) | 재현·근거 확인 뒤 수정 |
-| 수정 제안 심사 | [Superpowers receiving-code-review](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/receiving-code-review/SKILL.md) | 현재 요구와 코드에 맞는지 검증 |
-| 회귀·변경 검토 | [gstack review](https://github.com/garrytan/gstack/blob/ce3a093a6421f84705ff6d58b1b2b022ca9e945d/review/SKILL.md) | 브라우저 자동화·외부 AI·Push 등의 부가 경로 실행 금지 |
-| 완료 근거 | [Superpowers verification-before-completion](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/verification-before-completion/SKILL.md) | 변경 이후 실제 검사 범위와 주장 일치 |
+원본은 팩에 함께 포함된다. [skill-routing.md](skill-routing.md)의 경로·실행 계약을 적용하고 각 연결 스킬과 지정 원본을 읽는다.
 
-이 스킬은 위 프로젝트를 설치·실행하거나 모델·런타임 설정을 바꾸지 않는다. 없으면 기본 코드 도구와 위의 짧은 위임으로 충분하다. 실제 형식적 Skill 호출이 필요하면 호스트에서 노출된 이름과 기능을 확인한다.
+| 경과·실제 상태 | 적용 경로 |
+|---|---|
+| 0~8 자료 조사 | 기본 파일·코드 도구로 과제 확인; 필요하면 interview 진입 |
+| 8~30 담당자 사례·규칙·예외 | sk-exam-interview |
+| 30~40 최소 설계·작업 계획 | sk-exam-design → sk-exam-plan |
+| 40~65 첫 흐름 구현 | sk-exam-implement ↔ sk-exam-test |
+| 65~80 직접 사용·반례 검사 | sk-exam-test, 실패 시 sk-exam-debug |
+| 80~105 개선 | sk-exam-debug → sk-exam-implement/test; 중요 제안이면 review-response |
+| 105~125 필수 흐름 연결 | sk-exam-implement/test |
+| 125~145 통합 변경 검토 | sk-exam-review → 필요한 수정·재검사 → sk-exam-verify |
+| 145~165 실제 구조·설명 일치 | sk-exam-verify; 새 정책 공백이면 해당 부분 interview |
+| 165~180 저장·최종 상태 | sk-exam-verify 우선; 제출을 막는 결함만 최소 debug/test |
+
+위 경로는 권고다. 실제 완료를 시간만으로 가정하지 않는다. 원본 런타임 전체 실행·모든 gate 통과와 시험용 제한 적용을 구분한다. 원본의 설치·외부 통신·작업공간 전환·자동 제출을 실행하지 않는다.

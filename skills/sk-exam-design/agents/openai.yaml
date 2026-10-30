@@ -1,0 +1,4 @@
+interface:
+  display_name: "SK 시험 · 설계 검토"
+  short_description: "고정된 gstack 원본을 읽고 시험 조건에 맞춰 설계 검토"
+  default_prompt: "$sk-exam-design 현재 업무 근거·코드·남은 시간에 맞춰 이 단계를 진행하고 실제 결과를 MD에 연결해줘."

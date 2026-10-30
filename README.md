@@ -1,87 +1,69 @@
-# SK AI Exam Operator
+# SK AI Exam Operator — v2.0.0 원본 포함 스킬 팩
 
-SK AI 해커톤·Probe의 180분 과제를 위한 개인 운영 스킬입니다. 담당자 답변을 업무 규칙·기능·예외·판단·검증 기록으로 연결하고, 참가자가 알려주는 남은 시간과 실제 진행 상태에 따라 다음 작업을 정합니다. 대회 주최사나 플랫폼의 공식 스킬은 아닙니다.
+SK AI 해커톤·Probe의 180분 과제에서 담당자 답변을 업무 규칙·기능·예외·판단·검증 MD로 연결하고, 남은 시간과 실제 상태에 따라 인터뷰·계획·구현·테스트·개선을 이어가는 개인 운영 팩입니다. 대회나 원본 프로젝트의 공식 시험 스킬은 아닙니다.
 
-## 설치 위치와 버전
+**[시험 시작 때 한 번 입력할 설치·시작 프롬프트](EXAM_PROMPTS.md)**를 사용하세요. 고정 ref는 `v2.0.0`입니다. 기존 `v1.0.0`은 운영 스킬 하나만 포함한 이전 버전이며 태그를 이동하지 않습니다.
 
-- 공개 저장소: https://github.com/jin-castle/sk-ai-exam-operator
-- 버전 ref: `v1.0.0`
-- 설치할 경로: `skills/sk-ai-exam-operator`
-- 스킬 이름: `sk-ai-exam-operator`
-- 원본: [SKILL.md](skills/sk-ai-exam-operator/SKILL.md)
-- 시험용 입력문: [EXAM_PROMPTS.md](EXAM_PROMPTS.md)
+## 함께 설치되는 10개 진입점
 
-태그를 다른 커밋으로 옮기지 않습니다. 고정 커밋 SHA를 확인한 경우 `v1.0.0` 대신 해당 SHA로 설치할 수 있습니다.
-
-## 빠른 시작
-
-시험 제공 환경의 Codex에 아래 설치 요청을 입력합니다. 설치와 시작을 같은 대화에서 처리하는 입력문은 [EXAM_PROMPTS.md](EXAM_PROMPTS.md)에 있습니다.
-
-```text
-$skill-installer 공개 저장소 https://github.com/jin-castle/sk-ai-exam-operator 에서
-ref v1.0.0, 경로 skills/sk-ai-exam-operator 의 스킬만 설치해줘.
-기존 같은 이름의 스킬이 있으면 덮어쓰지 말고 원본과 비교해줘.
-Codex 업데이트, 외부 AI·개인 키, Computer Use, 외부 전송·Git Push는 하지 마.
-```
-
-설치 후 호스트의 스킬 목록 반영을 확인하고 다음 턴에 시작합니다. 파일 설치와 목록 인식은 별개입니다. 목록 반영이 늦어지면 설치된 `SKILL.md`를 직접 읽어 현재 대화에서 적용할 수 있습니다. 이를 정식 목록 인식 성공으로 기록하지 않습니다.
-
-```text
-$sk-ai-exam-operator 시험 운영을 시작해줘.
-화면에서 확인한 남은 시간은 180분이야.
-과제와 기존 파일을 먼저 확인하고, 담당자 질문·MD 기록·구현·검증을 이어가줘.
-```
-
-`180`은 실제 화면의 값으로 바꿉니다. 시간이 아직 확인되지 않았다면 알려주지 않아도 되며, 스킬은 현재 잔여 시간을 180분으로 가정하지 않습니다.
-
-## 어떻게 운영하나
-
-초반에는 과제·업무 정책·성공 기준을 확인하고, 중반에는 작은 사용자 흐름을 구현해 직접 사용과 코드 검사로 개선합니다. 후반에는 필수 흐름 완성·통합 검증·본인의 설명·저장·제출 확인에 집중합니다.
-
-사용자가 담당자 답변이나 새 시간 보고를 전달하면 바뀐 기록만 갱신합니다. 같은 시험 대화에서 스킬을 매번 다시 호출할 필요는 없습니다. 최신 잔여 시간은 사용자가 보고한 값만 사용하며, 이전 값은 ‘마지막 보고’로 표시합니다.
-
-| 기본 기록 | 내용 |
+| 스킬 이름 | 역할·원본 |
 |---|---|
-| `exam-notes/01_domain.md` | 답변·업무 규칙·출처·미확인 |
-| `exam-notes/02_requirements.md` | 기능·필요 조건·수용 기준 |
-| `exam-notes/03_exceptions.md` | 예외·기대 처리·구현·검증 연결 |
-| `exam-notes/04_decisions.md` | 실제 AI 제안·참가자의 선택·실제 이유 |
-| `exam-notes/05_verification.md` | 실제 실행·직접 관찰·시스템 흐름·한계 |
+| `sk-ai-exam-operator` | 운영·시간·MD·단계 연결 |
+| `sk-exam-interview` | ouroboros · interview |
+| `sk-exam-design` | gstack · plan-eng-review |
+| `sk-exam-plan` | superpowers · writing-plans |
+| `sk-exam-implement` | superpowers · executing-plans |
+| `sk-exam-test` | superpowers · test-driven-development |
+| `sk-exam-debug` | superpowers · systematic-debugging |
+| `sk-exam-review-response` | superpowers · receiving-code-review |
+| `sk-exam-review` | gstack · review |
+| `sk-exam-verify` | superpowers · verification-before-completion |
 
-과제 지정 양식이나 동등한 기록이 있으면 재사용합니다. 선택적 스크립트는 기존 본문 기록을 덮어쓰지 않습니다. 기록용 폴더와 상태 파일은 이 저장소의 `.gitignore`에 포함돼 있습니다.
+운영 스킬이 상황에 맞는 연결 스킬의 실제 `SKILL.md`, 해당 원본과 필요한 지원 문서를 읽고 적용합니다. 같은 시험 대화에서 참가자가 스킬을 매번 호출할 필요는 없습니다. 호스트의 실제 호출 도구가 없거나 목록 반영 전이라면 파일 기반 적용으로 진행하고 그 사실을 구분합니다.
 
-## 의존성과 한계
+## 원본이 실제로 포함되는 범위
 
-- 핵심 운영은 Markdown 지침과 기본 코드 도구로 가능합니다.
-- Python이 이미 있으면 표준 라이브러리만 쓰는 선택적 보조 스크립트로 시간 보고와 빈 양식을 관리할 수 있습니다. 새 Python이나 패키지를 설치할 필요는 없습니다.
-- Ouroboros·gstack·Superpowers는 선택적 참고 대상입니다. 이 저장소에 원본 런타임을 포함하거나 자동 설치하지 않습니다.
-- 다른 스킬의 정식 실행과 해당 원칙을 참고한 별도 프롬프트를 구분합니다.
-- 타이머 읽기·자동 감소·알람·브라우저 자동화·제출 자동화는 없습니다.
-- 참가자가 말하지 않은 판단 이유나 실행하지 않은 테스트 결과를 만들지 않습니다.
-- AI 금지 후속 서술형에 들어갔다는 보고가 오면 문항 분석·답안·첨삭·파일 작업을 멈춥니다.
+- Superpowers: `skills/` 전체 원본·지원 파일, MIT LICENSE.
+- gstack: `plan-eng-review/`, `review/`의 원본·지원 파일, MIT LICENSE.
+- Ouroboros: interview 원본, socratic-interviewer·seed-closer 보조 프롬프트, MIT LICENSE.
 
-실제 시험의 반입·AI·모델·자동화·공개 유지 조건은 최신 응시 안내가 우선합니다. 준비 단계의 이 공개 소스 게시와 시험자료의 외부 전송은 구분해야 합니다. 시험 중에는 시험자료나 생성 기록을 이 저장소로 Push하지 않습니다.
+고정 커밋의 **124개 원본 파일을 바이트 그대로 보존**했습니다. 원본 `SKILL.md`의 파일명만 `SKILL.original.md`로 저장해 호스트가 지원되지 않는 원본을 별도 스킬로 자동 등록하는 것을 막습니다. [잠금 파일](skills/sk-ai-exam-operator/bundle-lock.json)에 원래 경로·저장 경로·SHA256, [원본 고지](THIRD_PARTY_NOTICES.md)에 출처와 LICENSE가 있습니다. 원본은 운영 스킬 하위 `upstream/`에 함께 설치되고, 9개 연결 스킬은 그 파일을 사용합니다.
 
-## 선택적 도우미
+원본의 전체 실행 환경까지 설치하지는 않습니다. gstack의 바이너리·Bun·브라우저·telemetry·외부 모델, Ouroboros의 MCP·uvx, Superpowers의 자동 작업공간 전환·merge/push 등은 실행하지 않습니다. 연결 스킬이 원본 절차 중 실제 적용한 부분과 중요 생략을 기록합니다. [호출 계약](skills/sk-ai-exam-operator/references/skill-routing.md)을 참고하세요.
 
-아래는 명령 형태입니다. `SKILL_DIR`와 작업 경로는 현재 환경의 실제 위치를 사용합니다. 시간 값도 실제 보고값으로 바꿉니다.
+## 설치와 확인
 
-```text
-python SKILL_DIR/scripts/exam_session.py init --root exam-notes --remaining 180
-python SKILL_DIR/scripts/exam_session.py checkpoint --root exam-notes --remaining 72
-python SKILL_DIR/scripts/exam_session.py status --root exam-notes
-```
+기본 `skill-installer`에서 [설치 프롬프트](EXAM_PROMPTS.md)에 나열한 **10개 경로를 함께 설치**해야 합니다. 운영 스킬 하나만 설치하면 원본은 포함되지만 9개 연결 진입점은 누락됩니다. 기존 대상이 있으면 덮어쓰지 않고 충돌 없는 별도 `--dest`에 팩 전체를 설치해 파일로 적용할 수 있습니다. 목록 등록을 위해 제공 Codex를 업데이트하지 않습니다.
 
-`status`는 읽기 전용입니다. 새 시간 보고 없는 재실행은 기존 시간과 보고 시각을 보존합니다. 스크립트가 보여주는 권고 구간은 실제 기능 완료 여부를 뜻하지 않습니다.
-
-## 준비 단계 검증
-
-기존 Python 환경에서 저장소 루트 기준으로 실행할 수 있습니다. 시험 시작 시 이 전체 검사를 반복할 필요는 없습니다.
+기존 Python으로 체크아웃 검증:
 
 ```text
-python -B -m unittest discover -s tests -v
+python -X utf8 -B scripts/check_bundle.py --root .
+python -X utf8 -B -m unittest discover -s tests -v
 ```
 
-검사는 시간 경계·미보고·재개·기존 문서 보존·잘못된 입력·상태 충돌·읽기 전용 조회를 확인합니다. 실제 시험 플랫폼 호환성이나 생성 앱의 동작을 검증하는 테스트는 아닙니다.
+설치 후 검증:
 
-원본 스킬의 선택적 연결은 [references/operation.md](skills/sk-ai-exam-operator/references/operation.md)를 참조합니다. 이 저장소에는 담당자 실제 답변, 시험 데이터, 응시 로그, 개인 연락처·인증 정보가 포함되지 않습니다.
+```text
+python -X utf8 -B ACTUAL_OPERATOR_DIR/scripts/check_bundle.py --installed-root ACTUAL_SKILLS_PARENT
+```
+
+검증기는 10개 진입점·원본 고정 커밋·124개 SHA256·LICENSE·경로·연결을 읽기 전용으로 확인합니다. 이 결과는 원본 전체 런타임 동작이나 실제 시험 PC 호환성의 증명이 아닙니다. Python이 없으면 파일 확인으로 진행하고 해시 검증 불가를 밝힙니다. 새 런타임이 필요하지 않습니다.
+
+## 기록과 시간 운영
+
+현재 과제의 `exam-notes/` 또는 기존 지정 양식을 사용합니다.
+
+| 기본 문서 | 내용 |
+|---|---|
+| `01_domain.md` | 담당자 답변·규칙·근거·미확인 |
+| `02_requirements.md` | 기능·필요 조건·수용 기준·짧은 실행 계획 |
+| `03_exceptions.md` | 예외·기대 처리·코드·검사 연결 |
+| `04_decisions.md` | 실제 AI 제안·참가자의 실제 선택과 이유 |
+| `05_verification.md` | 실제 검사·시스템 흐름·한계·스킬 적용 기록 |
+
+잔여 시간은 참가자가 실제 화면에서 확인해 전달한 값만 사용합니다. 자동 타이머·알람·브라우저·제출 자동화는 없습니다. 이미 확인한 정책·기존 구현·검사 기록을 재사용합니다. 선택적 `exam_session.py`는 시간 보고와 빈 양식을 관리하며 본문을 덮어쓰지 않습니다.
+
+## 사용 경계
+
+최신 응시 안내와 제공 환경의 허용 범위가 우선합니다. 실제 과제 데이터·답변·로그를 이 공개 저장소로 Push하지 않습니다. 참가자가 밝히지 않은 판단 이유나 실행하지 않은 테스트 결과를 만들지 않습니다. AI 금지 후속 서술형에 들어갔다는 보고가 오면 문항 분석·답안·첨삭·파일 작업을 멈춥니다.

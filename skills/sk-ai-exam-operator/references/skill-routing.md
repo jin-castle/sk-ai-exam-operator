@@ -1,0 +1,38 @@
+# 원본 스킬 팩과 단계별 호출
+
+이 팩은 운영 스킬 1개와 단계별 연결 스킬 9개를 제공한다. 연결 스킬은 실제 원본을 읽어 적용하며 이름만 제시하고 끝내지 않는다. 원본의 파일 바이트와 LICENSE를 보존한다. 자동 발견 시 지원되지 않는 원본까지 등록되는 것을 막기 위해 원본의 `SKILL.md` 파일명만 `SKILL.original.md`로 바꿨다. 매핑·출처·SHA256은 운영 폴더의 `bundle-lock.json`에 있다.
+
+## 공통 실행 계약
+
+- 과제의 요구·최신 응시 안내·사용자가 승인한 운영 흐름이 우선한다. AI 금지 후속 단계·시간 만료 보고는 모든 하위 스킬에 앞서 확인한다. 운영 스킬의 기록·판단 출처·잔여 시간 규칙을 그대로 적용한다.
+- 첫 시작 시 팩 검증을 한 번 한다. 저장소에서는 `python -X utf8 -B scripts/check_bundle.py --root .`, 설치 후에는 `python -X utf8 -B ACTUAL_OPERATOR_DIR/scripts/check_bundle.py --installed-root ACTUAL_SKILLS_ROOT`를 사용한다. 경로는 실제 설치 위치로 바꾼다. Python이 없으면 기본 파일 도구로 10개 SKILL.md와 잠금 파일에 적힌 원본·LICENSE·지원 문서를 확인하고 해시 확인 불가를 밝힌다. 새 런타임을 설치하지 않는다.
+- 현재 스킬 목록·파일 경로를 확인한다. 호스트가 실제 Skill 호출 도구를 제공하면 정확한 이름으로 호출한다. 그런 도구가 없거나 목록 반영이 지연됐으면 해당 연결 스킬의 **실제 SKILL.md를 파일 도구로 읽고**, 지정된 원본과 필요한 지원 문서를 읽어 현재 대화에서 수행한다. 가짜 slash 명령·존재하지 않는 도구를 만들지 않는다. 이는 파일 기반 적용이며 호스트의 정식 등록 성공과 구분한다.
+- 각 단계에서 해당 원본 전체를 먼저 읽고 지원 문서는 필요한 것만 추가한다. 원본 내부의 상대 경로는 `upstream/<project>/`의 같은 상대 위치로 매핑한다. 원본이 `SKILL.md`를 가리키면 실제 포함된 `SKILL.original.md`로 매핑한다. `~/.claude/skills/gstack/` 경로도 포함된 `upstream/gstack/` 문서 경로로 매핑하되 없는 실행 바이너리를 실행하지 않는다.
+- 적용은 **시험용 연결 스킬 + 원본 절차의 제한 적용**이다. gstack의 전체 런타임, 원본 모든 gate 통과, Ouroboros MCP 실행을 했다고 말하지 않는다. 생략한 외부 호출·작업공간 도구·독립 검토와 실제 적용한 절차를 구분한다.
+- 기본 방식은 현재 제공 환경의 inline 구현이다. 허용 모델·설정을 바꾸거나 외부 AI·개인 키·Codex 업데이트·MCP·Bun·uvx·새 런타임을 설치하지 않는다. Computer Use·자동 브라우저·원격 PR/댓글/telemetry·시험자료 외부 전송·Git Push를 하지 않는다. 원본 명령을 일괄 복사해 실행하지 않는다.
+- 재승인으로 단계마다 멈추지 않는다. 이미 승인된 가역적 계획·구현·검사·기록은 계속하고 업무 정책의 중요한 공백만 참가자에게 확인한다. 참가자가 원본에 없는 이유·선택·검사 결과를 했다고 쓰지 않는다.
+
+## 실제 단계별 연결
+
+| 상황·기본 시간대 | 읽어 적용할 연결 스킬 | 원본 |
+|---|---|---|
+| 초반 업무 사례·규칙·예외, 또는 새 정책 공백 | `sk-exam-interview` | Ouroboros interview + socratic-interviewer/seed-closer |
+| 최소 설계·요구 변화 | `sk-exam-design` | gstack plan-eng-review + 관련 상세 절 |
+| 설계가 정해졌고 구현 작업 분해 필요 | `sk-exam-plan` | Superpowers writing-plans |
+| 첫 프로토타입·개선·필수 흐름 구현 | `sk-exam-implement` | Superpowers executing-plans |
+| 구현 전후 업무 동작 검사 | `sk-exam-test` | Superpowers test-driven-development |
+| 재현된 실패 | `sk-exam-debug` | Superpowers systematic-debugging |
+| 중요한 AI 수정 제안 | `sk-exam-review-response` | Superpowers receiving-code-review |
+| 통합 변경·누락·회귀 검토 | `sk-exam-review` | gstack review + checklist/관련 specialist |
+| 변경 후 완료 주장·최종 준비 | `sk-exam-verify` | Superpowers verification-before-completion |
+
+시간표 전체는 operation.md를 따른다. 스킬 9개를 매번 차례로 모두 실행하지 않는다. 실제 정책·구현 상태에 필요한 단계를 고르며, 테스트·디버깅·제안 심사는 중간에 재진입할 수 있다. 남은 15분 이내에는 verify를 우선하고 제출을 막는 결함의 가능한 최소 수정에만 debug/test/implement를 연결한다.
+
+## 스킬 적용 기록
+
+`05_verification.md`에 기존 형식을 해치지 않는 짧은 기록을 추가한다.
+
+| 단계/기능 | 연결 스킬 | 실제 읽은 원본·지원 파일 | 적용·중요 생략 | 실행 근거/미검증 |
+|---|---|---|---|---|
+
+기록은 실제로 읽고 수행한 뒤 작성한다. 스킬 파일 읽기는 테스트 통과가 아니다. 같은 단계의 반복 기록은 바뀐 사실만 갱신한다. 이 기록을 위해 별도 중복 문서를 만들거나 참가자의 판단 이력을 연출하지 않는다.
