@@ -31,14 +31,17 @@ class OperatorTests(unittest.TestCase):
 
     def test_time_contract_at_every_transition(self):
         expected = {
-            180: "inspect", 172: "interview", 160: "rules", 150: "plan",
-            140: "prototype", 115: "test", 100: "improve", 75: "complete-flow",
-            55: "review", 35: "explain", 15: "final", 0: "expired",
+            180: ("inspect", 1), 172: ("interview", 1), 155: ("design", 1), 145: ("first-flow", 1),
+            115: ("complete", 1), 80: ("independent-check", 2), 65: ("review", 2),
+            50: ("harden", 2), 30: ("document", 3), 15: ("final", 3), 0: ("expired", None),
         }
-        for remaining, stage in expected.items():
+        for remaining, (stage, section) in expected.items():
             with self.subTest(remaining=remaining):
-                self.assertEqual(operator.window_for(remaining)["id"], stage)
-        self.assertEqual(operator.window_for(15.01)["id"], "explain")
+                window = operator.window_for(remaining)
+                self.assertEqual(window["id"], stage)
+                self.assertEqual(window["section"], operator.SECTIONS.get(section))
+        self.assertEqual(operator.window_for(80.01)["id"], "complete")
+        self.assertEqual(operator.window_for(15.01)["id"], "document")
         self.assertEqual(operator.window_for(0.01)["id"], "final")
 
     def test_unknown_time_is_not_assumed_to_be_180(self):
@@ -79,13 +82,15 @@ class OperatorTests(unittest.TestCase):
         operator.session("init", self.root, 140)
         self.assertEqual((self.root / "01_domain.md").read_bytes(), original)
         self.assertTrue((self.root / "05_verification.md").is_file())
+        for name in ("06_handoff.md", "10_work_log.md", "20_review.md"):
+            self.assertTrue((self.root / name).is_file(), name)
 
     def test_user_time_correction_can_increase_without_restarting(self):
         operator.session("init", self.root, 72)
         result = operator.session("checkpoint", self.root, 100)
         self.assertTrue(result["time_increased_by_user_correction"])
         self.assertEqual(result["last_reported_remaining"], 100)
-        self.assertEqual(result["advisory_window"]["id"], "improve")
+        self.assertEqual(result["advisory_window"]["id"], "complete")
 
     def test_invalid_remaining_does_not_create_or_change_files(self):
         for value in (-1, 181, math.nan, math.inf, True, "72"):
@@ -137,7 +142,7 @@ class OperatorTests(unittest.TestCase):
         operator.session("init", self.root, 72)
         before = snapshot(self.root)
         result = operator.session("status", self.root)
-        self.assertEqual(result["advisory_window"]["id"], "complete-flow")
+        self.assertEqual(result["advisory_window"]["id"], "independent-check")
         self.assertEqual(snapshot(self.root), before)
 
     def test_note_directory_collision_is_preserved(self):

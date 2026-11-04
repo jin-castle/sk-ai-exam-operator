@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "2.2.0",
+  "version": "3.0.0",
   "sources": [
     {
       "id": "superpowers",
@@ -651,6 +651,12 @@
     {
       "name": "sk-ai-exam-operator",
       "path": "skills/sk-ai-exam-operator"
+    },
+    {
+      "name": "sk-exam-frame",
+      "path": "skills/sk-exam-frame",
+      "source_id": "superpowers",
+      "entrypoint": "upstream/superpowers/skills/brainstorming/SKILL.original.md"
     },
     {
       "name": "sk-exam-interview",
