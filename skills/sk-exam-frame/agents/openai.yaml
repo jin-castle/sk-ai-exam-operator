@@ -1,4 +1,4 @@
 interface:
   display_name: "SK 시험 · 문제 구조화"
   short_description: "과제를 문제 지도·Python 그림(SVG/PNG)으로 정리하고 깨지는 가정을 인터뷰 질문으로"
-  default_prompt: "$sk-exam-frame 과제 원문과 제공 자료로 문제 지도를 만들고, 단순 구현이 깔고 있는 가정을 깨지는 지점과 담당자 인터뷰 질문으로 정리해줘."
+  default_prompt: "$sk-exam-frame 자료 사실만 먼저 정리하고, 내가 문제·원인·위험한 가정·질문 3개를 먼저 쓰게 물어봐줘. 그다음 빠진 범주만 짚어줘."

@@ -52,6 +52,9 @@ def text_width(text, size):
 
 
 def wrap(text, width, size):
+    paragraphs = str(text).split("\n")
+    if len(paragraphs) > 1:  # explicit line breaks are kept
+        return [line for part in paragraphs for line in wrap(part, width, size)]
     lines, line = [], ""
     for word in str(text).split(" "):
         candidate = f"{line} {word}".strip()
@@ -204,6 +207,8 @@ def build_map(spec):
     if not isinstance(spec, dict):
         raise InputError("spec must be a JSON object")
     flow = spec.get("flow") or {}
+    if not isinstance(flow, dict):
+        raise InputError("flow must be an object with inputs/process/outputs/users")
     causes = as_list(spec.get("causes"), "causes")
     effects = as_list(spec.get("effects"), "effects")
     assumptions = as_list(spec.get("assumptions"), "assumptions")
@@ -290,8 +295,15 @@ def nice_ticks(lo, hi, count=6):
     return ticks
 
 
-def read_points(path, xcol, ycol, gcol=None):
-    with open(path, encoding="utf-8-sig", newline="") as handle:
+def read_points(path, xcol, ycol, gcol=None, encoding="utf-8-sig"):
+    try:
+        return _read_points(path, xcol, ycol, gcol, encoding)
+    except UnicodeDecodeError as error:
+        raise InputError(f"{Path(path).name}: cannot decode as {encoding}; try --encoding cp949") from error
+
+
+def _read_points(path, xcol, ycol, gcol, encoding):
+    with open(path, encoding=encoding, newline="") as handle:
         reader = csv.DictReader(handle)
         fields = reader.fieldnames or []
         for name in (xcol, ycol) + ((gcol,) if gcol else ()):
@@ -393,7 +405,8 @@ def draw_scatter(points, overlay, marks, title, clip_pct, xlabel, ylabel, overla
     svg.text(lx, ly, f"표시 {len(inside)} / 전체 {len(points)}", size=12)
     if outside:
         ly += 18
-        svg.text(lx, ly, f"보기 범위 밖 {outside}개 (이상값 확인)", size=12, fill="#c23b3b")
+        label = f"가운데 {clip_pct:g}% 보기 범위 밖 {outside}개" if clip_pct < 100 else f"범위 밖 {outside}개"
+        svg.text(lx, ly, label, size=12, fill="#c23b3b")
     summary = {"plotted": len(inside), "outside_view": outside, "groups": groups,
                "overlay_plotted": len(overlay_in), "view": [round(v, 4) for v in (x0, x1, y0, y1)],
                "colors": color}
@@ -444,12 +457,14 @@ def main(argv=None):
     s.add_argument("--overlay-x")
     s.add_argument("--overlay-y")
     s.add_argument("--overlay-label", default="보조 점")
-    s.add_argument("--mark", action="append", default=[], help="x,y:label, repeatable")
+    s.add_argument("--mark", action="append", default=[],
+                   help="x,y:label, repeatable; write --mark=-1,2:label for negative x")
     s.add_argument("--clip-pct", type=float, default=99.0,
                    help="central percentage of points that sets the view; 100 shows everything")
     s.add_argument("--title", default="데이터 분포")
     s.add_argument("--out", type=Path, default=Path("exam-notes/data_scatter.svg"))
     s.add_argument("--png", action="store_true", help="also write PNG if matplotlib and a Korean font exist")
+    s.add_argument("--encoding", default="utf-8-sig", help="CSV encoding, e.g. cp949 for Excel-saved Korean files")
     args = parser.parse_args(argv)
     try:
         if args.command == "template":
@@ -461,7 +476,7 @@ def main(argv=None):
         elif args.command == "map":
             try:
                 spec = json.loads(args.spec.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError) as error:
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
                 raise InputError(f"cannot read spec: {error}") from error
             drawing, summary = build_map(spec)
             if drawing is None:
@@ -475,11 +490,11 @@ def main(argv=None):
         else:
             if not 50 <= args.clip_pct <= 100:
                 raise InputError("--clip-pct must be between 50 and 100")
-            points, skipped = read_points(args.csv, args.x, args.y, args.group)
+            points, skipped = read_points(args.csv, args.x, args.y, args.group, args.encoding)
             overlay, overlay_skipped = [], 0
             if args.overlay:
                 overlay, overlay_skipped = read_points(args.overlay, args.overlay_x or args.x,
-                                                       args.overlay_y or args.y)
+                                                       args.overlay_y or args.y, encoding=args.encoding)
             marks = [parse_mark(m) for m in args.mark]
             svg, summary = draw_scatter(points, overlay, marks, args.title, args.clip_pct, args.x, args.y,
                                         args.overlay_label)

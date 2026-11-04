@@ -1,6 +1,6 @@
-# 시험 시작 시 한 번 입력할 설치·시작 프롬프트 — v3.0.0
+# 시험 시작 시 한 번 입력할 설치·시작 프롬프트 — v3.0.1
 
-공개 저장소: https://github.com/jin-castle/sk-ai-exam-operator · 고정 ref: `v3.0.0`.
+공개 저장소: https://github.com/jin-castle/sk-ai-exam-operator · 고정 ref: `v3.0.1`.
 
 이 버전은 운영 스킬 1개 + 단계별 연결 스킬 10개, 원본 3프로젝트의 고정 소스·지원 문서·LICENSE를 함께 설치합니다. 연결 스킬은 원본을 실제 읽어 시험 조건 안에서 수행하며, gstack/Ouroboros의 전체 런타임 설치·실행을 의미하지 않습니다.
 
@@ -9,13 +9,13 @@
 아래 블록을 그대로 입력합니다. 잔여 시간은 AI가 한 번 요청하면 시험 화면에서 확인한 실제 값을 전달합니다.
 
 ```text
-공개 저장소 https://github.com/jin-castle/sk-ai-exam-operator 의 고정 ref v3.0.0에서
+공개 저장소 https://github.com/jin-castle/sk-ai-exam-operator 의 고정 ref v3.0.1에서
 운영 스킬과 단계별 원본 기반 스킬 팩을 함께 설치하고, 현재 대화에서 시험 운영을 시작해줘.
 
 응시 환경 안의 AI·파일·터미널 도구로만 진행하고, 외부 브라우저·새 탭·창은 열지 마.
 공개 자료는 허용된 Git Clone 또는 HTTP 다운로드로 가져와줘.
 기본 skill-installer의 install-skill-from-github.py를 찾아 사용해줘.
---repo jin-castle/sk-ai-exam-operator --ref v3.0.0 --method download 으로
+--repo jin-castle/sk-ai-exam-operator --ref v3.0.1 --method download 으로
 다음 11개 경로를 --path에 모두 전달해 한 번에 설치해줘:
 skills/sk-ai-exam-operator
 skills/sk-exam-frame
@@ -34,7 +34,9 @@ skills/sk-exam-verify
 기본 installer가 없으면 허용된 공개 다운로드로 이 ref의 저장소를 도구 폴더에 받아
 skills/의 11개 실제 파일을 직접 읽어 적용해줘. 새로운 installer·런타임은 설치하지 마.
 다운로드 방식은 download로 고정하고, 차단·인증 오류 때 다른 접속 방식으로 자동 재시도하지 마.
-네트워크·권한이 막히면 우회하지 말고, 설치 완료라고 하지 않은 채 가능한 기본 도구로 진행해줘.
+설치에 필요한 샌드박스 권한 승인 요청은 해도 돼(우회가 아니야). 승인이 거절되거나 네트워크가 막히면 다른 경로로
+우회하지 말고, 설치 완료라고 하지 않은 채 가능한 기본 도구로 진행해줘.
+설치가 끝나면 실제 설치 경로(11개 스킬의 부모 폴더)를 한 줄로 알려줘. 세션 2·3 프롬프트에 넣을 거야.
 
 설치한 운영 폴더의 scripts/check_bundle.py를 읽고, 기존 Python이 있으면 -X utf8 -B 옵션을 붙여
 --installed-root 실제_11개_스킬의_부모폴더 로 실행해 11개 진입점·원본 해시·LICENSE를 확인해줘.
@@ -53,7 +55,7 @@ Python이 없으면 파일 존재·경로를 확인하고 해시 검증 불가�
 파일로 확인할 사실은 직접 조사하고, 담당자에게 물을 업무 정책·우선순위·예외만 좁혀줘.
 생성된 질문 초안은 내가 사실·맥락·표현을 직접 검토한 뒤 담당자에게 사용할게.
 담당자와의 대화와 플랫폼 안 UI 확인은 내가 직접 하고 답변을 전달할게.
-답변을 규칙·기능·필요 조건·예외·판단·검증 MD로 연결해줘.
+담당자 답변 원문은 10_work_log.md에 남겨줘. 규칙·기능·예외 구조화는 세션 3이 해.
 외부 완성 결과물을 통째로 제출물에 대입하지 말고, 과제 해석·구현·검증은 제공 환경에서 해줘.
 이 세션의 역할은 1 구현이야. references/roles.md를 읽고 세션 1 절을 따라줘.
 검토는 세션 2, 구조화·문서화는 세션 3이 같은 작업 폴더에서 따로 맡아.
@@ -62,17 +64,16 @@ Python이 없으면 파일 존재·경로를 확인하고 해시 검증 불가�
 네가 스스로 정한 것·담당자 답변 원문을 남겨줘. 커밋은 이 세션만 하고 push는 하지 마.
 내가 "검토 R번호 반영해줘"라고 하면 원인 확인→최소 수정→같은 반례 재검사 후 로그에 남겨줘.
 세션을 하나만 쓸 수 있게 되면 내가 알려줄게. 그때는 roles.md의 '한 세션으로 할 때'를 따라줘.
-실제로 사용한 연결 스킬·원본·적용 범위·중요 생략은 05_verification.md에 짧게 남겨줘.
+실제로 사용한 연결 스킬·원본·적용 범위·중요 생략은 10_work_log.md에 짧게 남겨줘(05는 세션 3이 옮겨).
 같은 버전 원본을 이미 읽었고 현재 문맥에 남아 있으면 재사용하고 필요한 절만 다시 확인해줘.
 문맥을 잃었거나 파일이 바뀌면 다시 읽고, 10개 단계를 의례적으로 모두 순회하지 마.
-주요 선택 또는 첫 사용자 흐름 완성 시 한두 번은 AI의 모범 설명보다 먼저
-내가 예상 동작·선택 이유·실패 조건을 짧게 설명하게 한 뒤 실제 코드와 대조해줘.
-내 답변이 없으면 이해 미확인으로 남기고 독립적인 작업을 계속해줘. 제출 직전에는 이 절차를 새로 시작하지 마.
+내가 먼저 설명하는 확인 절차는 세 세션이면 세션 3이 맡아. 세션을 하나만 쓰게 되면 첫 흐름 완성 뒤 한 번,
+AI 모범 설명보다 먼저 내가 예상 동작·선택 이유·실패 조건을 말하게 하고 코드와 대조해줘.
 과제에 해당하는 입력 검증·권한·민감 정보 노출·저장 복구를 실제 검사 또는 미검증 이유와 연결해줘.
 문서는 바뀐 부분만 갱신하고, 정상 흐름과 중요한 업무 반례의 실제 결과로 완료를 판단해줘.
 
 실제 검사를 반복할 때 기존 Python과 허용된 로컬 명령으로 실행 근거 가드도 사용해줘.
-references/evidence-guard.md를 읽고 필수 항목·예외를 기존 F/E ID로 등록해줘.
+references/evidence-guard.md를 읽고 필수 항목·예외를 등록해줘(가드 저장소 exam-notes/.evidence-guard/는 이 세션만 써).
 관련 소스·테스트·설정·입력을 --watch 범위에 넣어 실제 검사하고, 마지막 변경 뒤 status를 확인해줘.
 코드·요구사항·입력 변경이나 최신 실패를 과거 성공으로 가리지 마.
 이 결과는 등록 항목과 지정 파일의 실행 근거만 뜻하므로, 업무 정답·테스트 충분성·수동 관찰은 따로 확인해줘.
@@ -93,13 +94,15 @@ AI 금지 후속 서술형 단계 또는 과제 시간 만료를 알리면 작�
 세션 1이 설치를 마친 뒤, 같은 작업 폴더를 여는 새 Codex 세션에 입력합니다. 설치를 다시 하지 않습니다.
 
 ```text
-같은 작업 폴더에서 세션 1이 sk-ai-exam-operator(v3.0.0)를 이미 설치했고 구현 중이야.
+같은 작업 폴더에서 세션 1이 sk-ai-exam-operator(v3.0.1)를 이미 설치했고 구현 중이야.
+설치 경로: [세션 1이 알려준 경로]
 설치된 운영 스킬의 SKILL.md, references/roles.md, references/skill-routing.md를 읽어줘.
 이 세션의 역할은 2 검토야. roles.md의 세션 2 절을 따라줘.
-너는 exam-notes/20_review.md와 review/ 폴더만 쓰고, 과제 코드·결과물·10_work_log.md·01~06은 읽기만 해.
+너는 exam-notes/20_review.md와 exam-notes/review/ 폴더만 쓰고, 과제 코드·결과물·10_work_log.md·01~06은 읽기만 해.
 과제 코드는 고치지 말고 결함은 발견으로만 남겨줘. 커밋·push는 하지 마.
 첫 흐름이 나오기 전에는 과제 원문과 작업 로그의 담당자 답변으로 기대값을 먼저 정하고,
-결과 파일을 해법 코드와 별도로 다시 계산하는 독립 검사기 뼈대를 review/에 만들어줘.
+결과 파일을 해법 코드와 별도로 다시 계산하는 독립 검사기 뼈대를 exam-notes/review/에 만들어줘.
+과제 명령을 다시 돌릴 때 출력은 exam-notes/review/로 보내고 세션 1의 결과물을 덮어쓰지 마.
 첫 흐름이 나오면 작업 묶음(W)마다 AI가 혼자 정한 것 → 요구 충족 → 독립 검산(망가뜨린 입력으로 FAIL 먼저)
 → 조건 변경 재실행 순서로 보고, 발견을 R 번호 한 줄 형식으로 남겨줘.
 세션 1이 반영했다고 적은 R은 같은 반례로 다시 확인해줘.
@@ -110,18 +113,20 @@ AI 금지 후속 서술형 단계 또는 과제 시간 만료를 알리면 작�
 ## 세션 3 · 구조화·문서화 시작 프롬프트
 
 ```text
-같은 작업 폴더에서 세션 1이 sk-ai-exam-operator(v3.0.0)를 이미 설치했고 구현 중이야. 세션 2는 검토 중이야.
+같은 작업 폴더에서 세션 1이 sk-ai-exam-operator(v3.0.1)를 이미 설치했고 구현 중이야. 세션 2는 검토 중이야.
+설치 경로: [세션 1이 알려준 경로]
 설치된 운영 스킬의 SKILL.md, references/roles.md, references/records.md를 읽어줘.
 이 세션의 역할은 3 구조화·문서화야. roles.md의 세션 3 절을 따라줘.
 시작 직후에는 문서화할 것이 없으니 먼저 sk-exam-frame으로 문제 지도(00_problem_map.md)를 만들어줘. 너는 자료 사실만 정리하고,
 문제·원인·위험한 가정·질문 3개는 내가 먼저 내 말로 쓸게. 모범 답을 먼저 보여 주지 말고, 내 목록에서 빠진 범주만 짚어줘.
-고르고 고쳐 쓰는 건 내가 하고, 가정·질문마다 출처(나 / AI 제안)를 남겨줘. 그림은 scripts/frame_viz.py(map·scatter, --png)로 그려줘.
+고르고 고쳐 쓰는 건 내가 하고, 가정·질문마다 출처(나 / AI 제안)를 남겨줘. 그림은 sk-exam-frame/scripts/frame_viz.py(map·scatter, --png)로 그려줘.
 너는 exam-notes/00_problem_map.md, 01~06과 과제가 요구한 README·보고서만 쓰고, 코드·결과물·10_work_log.md·20_review.md는 읽기만 해.
-코드나 판정은 바꾸지 말고, 커밋·push는 하지 마.
+코드나 판정은 바꾸지 말고, 결함을 보면 나에게 알려줘(세션 1에 전달할게). 커밋·push는 하지 마.
+첫 흐름이 나온 뒤 한 번, 모범 설명 없이 내가 예상 동작·선택 이유·실패 조건을 먼저 말하게 하고 코드와 다른 곳만 짚어줘.
 작업 로그(W)와 검토 기록(R)을 Q/F/E/D/T로 구조화하고 06_handoff.md를 체크포인트마다 갱신해줘.
 기록에 없는 내 판단 이유는 지어내지 말고 나에게 짧게 물어봐. 답이 없으면 '참가자 이유 미기재'로 둬.
 문서의 주장마다 근거 ID나 파일:함수를 달고, 근거가 없으면 '근거 없음'으로 표시해 알려줘.
-문서에 적힌 실행 명령은 실제로 다시 실행해 확인해줘.
+문서에 적힌 실행 명령은 출력이 세션 1의 결과물을 덮어쓰지 않을 때만 다시 실행해 확인해줘(안 되면 미검증).
 남은 시간은 내가 알려준 값만 쓰고, 시간 스크립트는 status만 봐.
 AI 금지 후속 서술형 단계 또는 과제 시간 만료를 알리면 작업을 멈춰줘.
 ```
@@ -131,7 +136,7 @@ AI 금지 후속 서술형 단계 또는 과제 시간 만료를 알리면 작�
 기본 도우미가 이미 있는 환경에서 사용하는 인수 예시입니다. 도우미 경로와 Python 실행기는 현재 환경에서 확인합니다.
 
 ```text
-python -X utf8 -B EXISTING_INSTALLER_PATH --repo jin-castle/sk-ai-exam-operator --ref v3.0.0 --method download --path skills/sk-ai-exam-operator skills/sk-exam-frame skills/sk-exam-interview skills/sk-exam-design skills/sk-exam-plan skills/sk-exam-implement skills/sk-exam-test skills/sk-exam-debug skills/sk-exam-review-response skills/sk-exam-review skills/sk-exam-verify
+python -X utf8 -B EXISTING_INSTALLER_PATH --repo jin-castle/sk-ai-exam-operator --ref v3.0.1 --method download --path skills/sk-ai-exam-operator skills/sk-exam-frame skills/sk-exam-interview skills/sk-exam-design skills/sk-exam-plan skills/sk-exam-implement skills/sk-exam-test skills/sk-exam-debug skills/sk-exam-review-response skills/sk-exam-review skills/sk-exam-verify
 ```
 
 설치 경로가 이미 있으면 공식 도우미는 중단합니다. 충돌 없는 별도 `--dest`를 쓰면 기존 스킬을 보존하면서 팩 전체를 받을 수 있습니다. 재실행 시 일부만 설치된 상태를 완료로 표시하지 않습니다.
@@ -192,7 +197,7 @@ AI 제안은 [실제 제안]이었고, 나는 [채택/수정/기각/보류]할�
 그래서: $sk-exam-debug 같은 입력으로 재현하고, 어느 단계에서 달라지는지 확인한 뒤 최소 수정해줘.
 ```
 
-### ③ AI가 큰 수정을 제안했을 때 (세션 1·2)
+### ③ AI가 큰 수정을 제안했을 때 (세션 1)
 
 ```text
 상황: AI가 [제안]을 하자고 했어.
@@ -208,7 +213,7 @@ AI 제안은 [실제 제안]이었고, 나는 [채택/수정/기각/보류]할�
 그래서: $sk-exam-review 두 값으로 다시 실행해서 달라진 결과와 새로 생긴 실패·제외를 검토 기록에 남겨줘.
 ```
 
-### ⑤ 완료라고 말하기 전 (세션 2·3)
+### ⑤ 완료라고 말하기 전 (모든 세션)
 
 ```text
 상황: [기능·문서]가 끝난 것 같아. 마지막 코드 변경은 [무엇]이었어.

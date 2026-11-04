@@ -105,6 +105,31 @@ class FrameVizTests(unittest.TestCase):
                                 self.root / "c.svg")
         self.assertEqual(bad_mark.returncode, 1)
 
+    def test_cp949_csv_gives_hint_then_reads_with_encoding(self):
+        csv_path = self.root / "kr.csv"
+        csv_path.write_bytes("x,y,구분\n1,2,가\n3,4,나\n".encode("cp949"))
+        bad = self.run_cli("scatter", csv_path, "--x", "x", "--y", "y", "--group", "구분", "--out", self.root / "a.svg")
+        self.assertEqual(bad.returncode, 1)
+        self.assertIn("cp949", json.loads(bad.stderr)["error"])
+        good = self.run_cli("scatter", csv_path, "--x", "x", "--y", "y", "--group", "구분",
+                            "--encoding", "cp949", "--out", self.root / "b.svg")
+        self.assertEqual(good.returncode, 0, good.stderr)
+        self.assertEqual(json.loads(good.stdout)["groups"], {"가": 1, "나": 1})
+
+    def test_negative_mark_and_bad_flow(self):
+        csv_path = self.root / "p.csv"
+        csv_path.write_text("x,y\n0,0\n1,1\n", encoding="utf-8")
+        ok = self.run_cli("scatter", csv_path, "--x", "x", "--y", "y", "--mark=-1,2:west", "--out", self.root / "m.svg")
+        self.assertEqual(ok.returncode, 0, ok.stderr)
+        spec_path = self.root / "bad.json"
+        spec_path.write_text(json.dumps({"problem": "p", "flow": ["not", "a", "dict"]}), encoding="utf-8")
+        result = self.run_cli("map", spec_path, "--out", self.root / "x.svg")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("flow", json.loads(result.stderr)["error"])
+
+    def test_wrap_keeps_explicit_newlines(self):
+        self.assertEqual(viz.wrap("첫 줄\n둘째 줄", 500, 13), ["첫 줄", "둘째 줄"])
+
     def test_wrap_respects_width(self):
         for text in ("한글과 English mixed 문장이 길게 이어지는 경우", "띄어쓰기없이아주길게이어지는한국어문장입니다"):
             for line in viz.wrap(text, 120, 13):
